@@ -14,28 +14,45 @@ export default {
     withPluginApi('0.8.30', api => {
       api.decorateCooked(
         ($elem, helper) => {
+          // Find all language blocks
           const $blocks = $elem.find('.dmp-lang')
           if (!$blocks.length) {
             return
           }
-          const foundUser = $blocks.filter(`[lang="${userLang}"]`).length
-          const foundDefault = $blocks.filter(`[lang="${defaultLang}"]`).length
-          const displayLang = foundUser
+
+          // Determine the language to display
+          const langs = $blocks
+            .map((i, el) => el.getAttribute('lang'))
+            .toArray()
+          const displayLang = langs.includes(userLang)
             ? userLang
-            : foundDefault
+            : langs.includes(defaultLang)
             ? defaultLang
-            : $blocks.first().attr('lang')
-          $blocks.not(`[lang="${displayLang}"]`).hide()
+            : langs[0]
+
+          // Hide all language, except for the one to display
+          $blocks.hide()
+          $blocks.filter(`[lang="${displayLang}"]`).show()
+
+          /*
+          // If required, add the language select box at the top of the post
+          const options = langs.map(lang => {
+            const selected = lang === displayLang ? ' selected' : ''
+            return `<option value="${lang}"${selected}>${lang}</option>`
+          })
+          $(`<select class="dmp-select">${options.join()}</select>`)
+            .change(e => {
+              $blocks.hide()
+              $blocks.filter(`[lang="${e.target.value}"]`).show()
+            })
+            .prependTo($elem)
+          */
         },
         {
           id: 'discourse-multilingual-post',
           onlyStream: true // Prevent decorating the post in the editor
         }
       )
-
-      api.decorateWidget('title:after', function(helper) {
-        return 'Salut'
-      })
     })
   }
 }
