@@ -1,6 +1,6 @@
 # name: discourse-multilingual-post
 # about: A Discourse plugin that allows multiple localized versions of post content
-# version: 1.0.0
+# version: 1.0.1
 # authors: Sylvain Quendez
 
 # Load styles
