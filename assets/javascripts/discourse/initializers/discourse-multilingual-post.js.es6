@@ -3,13 +3,15 @@ import { withPluginApi } from 'discourse/lib/plugin-api'
 export default {
   name: 'discourse-multilingual-post',
   initialize(container, app) {
+    const siteSettings = container.lookup('site-settings:main')
+
     // If plugin is disabled, quit
-    if (!app.SiteSettings['discourse_multilingual_post_enabled']) {
+    if (!siteSettings['discourse_multilingual_post_enabled']) {
       return
     }
 
     const userLang = I18n.locale.substring(0, 2)
-    const defaultLang = app.SiteSettings.default_locale.substring(0, 2)
+    const defaultLang = siteSettings.default_locale.substring(0, 2)
 
     withPluginApi('0.8.30', api => {
       api.decorateCooked(

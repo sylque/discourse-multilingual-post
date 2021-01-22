@@ -1,8 +1,8 @@
-/*
+*
+!*/
 !.gitignore
 !README.md
 !LICENSE
 !plugin.rb
 !assets
 !config
-**/*.map
